@@ -1,5 +1,7 @@
 import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
 import javax.swing.JPanel;  
 
 public class GamePanel extends JPanel implements Runnable {
@@ -13,12 +15,22 @@ public class GamePanel extends JPanel implements Runnable {
     final int screenWidth = tileSize * maxscreenCol; // 768
     final int screenHeight = tileSize * maxscreenRow; // 576
 
+    int FPS = 60;
+
+    
+    Keyhandler keyH = new Keyhandler();
     Thread gameThread;
+
+    int PlayerX = 100;
+    int PlayerY = 100;
+    int PlayerSpeed = 4;
 
     public GamePanel() {
         this.setPreferredSize(new Dimension(screenWidth, screenHeight));
         this.setBackground(Color.black);
         this.setDoubleBuffered(true);
+        this.addKeyListener(keyH);
+        this.setFocusable(true);
     }
 
     public void startGameThread() {
@@ -27,11 +39,58 @@ public class GamePanel extends JPanel implements Runnable {
     }
     @Override
     public void run() {
-        // Game loop
+
+        double drawInterval = 1000000000 / FPS;
+        double delta = 0;
+        long lastTime = System.nanoTime();
+        long currentTime;
+        long timer = 0;
+        int drawCount = 0;
+
         while (gameThread != null) {
-            // Update game state
-            // Render game
+
+            currentTime = System.nanoTime();
+            delta += (currentTime - lastTime) / drawInterval;
+            timer += currentTime - lastTime;
+            lastTime = currentTime;
+
+            if (delta >= 1) {
+                update();
+                repaint();
+                delta--;
+                drawCount++;
+            }
+            if (timer >= 1000000000) {
+                System.out.println("FPS: " + drawCount);
+                drawCount = 0;
+                timer = 0;
+            }   
         }
+    }
     
+    public void update() {
+        if (keyH.upPressed == true) {
+            PlayerY -= PlayerSpeed;
+        }
+        else if (keyH.downPressed == true) {
+            PlayerY += PlayerSpeed;
+        }
+        else if (keyH.leftPressed == true) {
+            PlayerX -= PlayerSpeed;
+        }
+        else if (keyH.rightPressed == true) {
+            PlayerX += PlayerSpeed;
+        }
+    }
+    @Override
+    public void paintComponent(Graphics g) {
+        super.paintComponent(g);
+        Graphics2D g2 = (Graphics2D) g;
+        // custom rendering here
+        g2.setColor(Color.white);
+        g2.fillRect(PlayerX, PlayerY, tileSize, tileSize);
+        g2.dispose();
+    }   
+
     // GamePanel implementation goes here
 }
