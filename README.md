@@ -1,55 +1,112 @@
-cat << 'EOF' > README.md
-# 2D Adventure
+# 2D Adventure Game 🎮
 
-A simple 2D adventure game built in Java, featuring sprite-based movement, tile maps, animations, and a lightweight custom engine. This project is designed to be extended into a full adventure/platformer.
+A tile-based 2D adventure game built with Java Swing. Features smooth player movement with sprite animations, a scrolling camera system, collision detection, and a 50x50 tile world map.
 
-## 🎮 Features
-- Player movement & animation  
-- Sprite rendering  
-- Tile-based world system  
-- Collision handling  
-- Expandable asset structure  
-- Simple & clean Java architecture  
+## ✨ Features
 
-## 📂 Project Structure
-2D-adventure/
-├── src/            # Java source code  
-├── res/            # Sprites, tiles, maps, sounds  
-├── .gitignore  
-└── README.md  
+- **Player Control**: Move with WASD or Arrow keys
+- **Sprite Animations**: 8-directional walking animations (2 frames per direction)
+- **World Map**: 50x50 tile world (2400x2400 pixels) loaded from text files
+- **Camera System**: 16x12 tile viewport that follows the player
+- **Collision Detection**: Prevents walking through walls and water
+- **Optimized Rendering**: Only draws visible tiles for better performance
+- **60 FPS**: Smooth gameplay with consistent frame rate
 
-## 🚀 Getting Started
+## 🎯 Controls
 
-### Requirements
-- Java JDK 8+  
-- Any IDE (IntelliJ / Eclipse / VS Code) or terminal  
+| Key | Action |
+|-----|--------|
+| W / ↑ | Move Up |
+| A / ← | Move Left |
+| S / ↓ | Move Down |
+| D / → | Move Right |
 
-### Run (IDE)
-1. Open project  
-2. Mark *res/* as Resources Folder  
-3. Run `Main.java`  
+## 🚀 Quick Start
 
-### Run (Terminal)
-git clone https://github.com/shrey1184/2D-adventure
-cd 2D-adventure
-javac -d bin $(find src -name "*.java")
-java -cp bin Main
-# (If your main class has a package, update the path accordingly)
+### Prerequisites
+- Java JDK 8 or higher
 
-## 🛠 Customize / Extend
-- Add tiles → res/tiles/  
-- Add sprites → res/sprites/  
-- Add maps → res/maps/  
-- Modify physics/logic → edit Java classes  
-- Create new levels, powers, enemies, items, UI, etc.
+### Compile & Run
+```bash
+# Navigate to project directory
+cd java1
+
+# Compile all source files
+javac src/*.java
+
+# Run the game
+java -cp src:res Main
+```
+
+## 📁 Project Structure
+
+```
+java1/
+├── src/
+│   ├── Main.java              # Entry point
+│   ├── GamePanel.java         # Game loop & rendering
+│   ├── Player.java            # Player controls & movement
+│   ├── Entity.java            # Base entity class
+│   ├── Keyhandler.java        # Keyboard input
+│   ├── TileManager.java       # Tile rendering & map loading
+│   ├── Tile.java              # Tile properties
+│   └── CollisionChecker.java  # Collision detection
+└── res/
+    ├── player/                # Player sprites (8 frames)
+    ├── tiles/                 # Environment tiles (ground, water, wall, etc.)
+    └── maps/                  # World map data (worldmap.txt)
+```
+
+## 🎨 Tiles
+
+| Tile | Type | Walkable |
+|------|------|----------|
+| 0 | Ground | ✅ |
+| 1 | Water | ❌ |
+| 2 | Wall | ❌ |
+| 3 | Grass | ✅ |
+| 4 | Trees | ✅ |
+| 5 | Sand | ✅ |
+
+## 🔧 Technical Details
+
+- **Tile Size**: 16x16 pixels (scaled 3x to 48x48)
+- **Screen Resolution**: 768x576 (16x12 tiles)
+- **World Size**: 2400x2400 (50x50 tiles)
+- **Player Speed**: 4 pixels per frame
+- **Animation Speed**: Frame changes every 12 ticks (~0.2s)
+- **Collision Hitbox**: 32x32 pixels with offset
+
+## 🛠️ Development Progress
+
+- [x] Game window and main loop (60 FPS)
+- [x] Player sprite rendering
+- [x] Keyboard input handling (WASD + Arrows)
+- [x] Walking animations (8 frames total)
+- [x] Tile system with rendering
+- [x] World map loading from text files
+- [x] Camera system following player
+- [x] Collision detection system
+- [x] Optimized tile rendering (only visible tiles)
+- [ ] NPCs and enemies
+- [ ] Items and inventory
+- [ ] Sound effects and music
+- [ ] Multiple maps and transitions
+
+## 📝 Map Format
+
+Maps are text files with single-digit tile numbers:
+```
+0010000210102011
+0022022201010000
+2020202000000200
+...
+```
 
 ## 🤝 Contributing
-Fork → Edit → Pull Request  
 
-## 📜 License
-MIT License  
+Feel free to fork this project and add your own features!
 
-## 👤 Author
-Shrey Shrivastava  
-GitHub: https://github.com/shrey1184
-EOF
+## 📄 License
+
+MIT License - Free to use and modify
